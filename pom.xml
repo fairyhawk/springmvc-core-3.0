@@ -3,9 +3,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.yizhilu</groupId>
-	<artifactId>springmvc-core</artifactId>
-	<version>3.0</version>
-	<name>springmvc-core</name>
+	<artifactId>nxmvc-core</artifactId>
+	<version>1.0</version>
+	<name>nxmvc-core</name>
 	<packaging>jar</packaging>
 	
 	<properties>
@@ -29,7 +29,7 @@
 	</repositories>
 
 	<build>
-		<finalName>springmvc-core</finalName>
+		<finalName>nxmvc-core</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
