@@ -14,7 +14,6 @@
 		<aspectj.version>1.7.3</aspectj.version>
 		<jdk.version>1.7</jdk.version>
 		<java.home>/Library/Java/JavaVirtualMachines/jdk1.7.0_79.jdk/Contents/Home</java.home>
-		<lucene.version>4.6.0</lucene.version>
 	</properties>
 	
 	
@@ -64,9 +63,9 @@
 					    <debug>true</debug>  
 					    <showDeprecation>false</showDeprecation>  
 					    <showWarnings>false</showWarnings> 
-					    <compilerArguments>
+					    <!--<compilerArguments>
 									<bootclasspath>${java.home}\jre\lib\rt.jar;${java.home}\jre\lib\jce.jar</bootclasspath>
-						</compilerArguments>  
+						</compilerArguments> -->
 					  </configuration>
 				</plugin>
 					
@@ -102,34 +101,6 @@
 						</execution>
 					</executions>
 				</plugin>
-
-                <plugin>
-                    <groupId>com.github.wvengen</groupId>
-                    <artifactId>proguard-maven-plugin</artifactId>
-                    <executions>
-                        <execution>
-                            <phase>package</phase>
-                            <goals><goal>proguard</goal></goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <options>
-                            <option>-allowaccessmodification</option>
-                            <option>-keep public class * extends java.applet.Applet { *; }</option>
-
-                            <option>-keep class com.yizhilu.os { public void init(); public void
-                                destroy(); }
-                            </option>
-                            <!-- 保持对外的接口性质类对外的类名与方法名不变 -->
-
-                        </options>
-                        <libs>
-                            <lib>${java.home}/jre/lib/rt.jar</lib>
-                            <lib>${java.home}/jre/lib/jsse.jar</lib>
-                        </libs>
-                    </configuration>
-                </plugin>
-
 
             </plugins>
 	    </pluginManagement>
@@ -201,7 +172,7 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				 <version>1.7.7</version>
+				 <version>1.7.12</version>
 			</dependency>
 	
 			<dependency>
@@ -209,22 +180,21 @@
 				<artifactId>logback-classic</artifactId>
 				<version>1.1.2</version>
 			</dependency>
-	
-			<dependency>
+			<!--<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>log4j-over-slf4j</artifactId>
-				  <version>1.7.7</version>
+				  <version>1.7.12</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
-				  <version>1.7.7</version>
+				  <version>1.7.12</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jul-to-slf4j</artifactId>
-				  <version>1.7.7</version>
-			</dependency>
+				  <version>1.7.12</version>
+			</dependency>-->
 		 	<!--  log -->
 			<dependency>
 	    	<groupId>commons-beanutils</groupId>
@@ -287,34 +257,7 @@
 			    <version>3.1</version>
 			</dependency>
 			<!-- httpclient -->
-			<!-- lucene -->
-			<dependency>
-			    <groupId>org.apache.lucene</groupId>
-			    <artifactId>lucene-spatial</artifactId>
-			    <version>3.5.0</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.apache.lucene</groupId>
-			    <artifactId>lucene-queries</artifactId>
-			    <version>3.5.0</version>
-			</dependency>
-			<dependency>
-			    <groupId>org.apache.lucene</groupId>
-			    <artifactId>lucene-core</artifactId>
-			    <version>3.5.0</version>
-			</dependency>
-	        <!--im4java  -->
-	        <dependency>
-			    <groupId>org.im4java</groupId>
-			    <artifactId>im4java</artifactId>
-			    <version>1.4.0</version>
-			</dependency>
-			<!-- memcached -->
-	          <dependency>
-			    <groupId>net.spy</groupId>
-			    <artifactId>spymemcached</artifactId>
-			    <version>2.10.3</version>
-			</dependency>
+
 			<!-- json -->
 			<dependency>
 			    <groupId>com.google.code.gson</groupId>
@@ -322,12 +265,7 @@
 			 <version>2.2.4</version>
 			</dependency>
 			<!-- json -->
-			<!-- im4java -->
-			<dependency>
-			    <groupId>org.im4java</groupId>
-			    <artifactId>im4java</artifactId>
-			    <version>1.4.0</version>
-			</dependency>
+
 			<!-- guava -->
 			<dependency>
 	            <groupId>com.google.guava</groupId>
@@ -372,15 +310,20 @@
 					</exclusion>
 			    </exclusions>
 			</dependency>
+		<!-- redis -->
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.8.0</version>
+		</dependency>
 
-        <dependency>
-            <groupId>net.sf.proguard</groupId>
-            <artifactId>proguard-base</artifactId>
-            <version>4.9</version>
-            <scope>runtime</scope>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>1.6.2.RELEASE</version>
+		</dependency>
 
-    </dependencies>
+	</dependencies>
 
 
 

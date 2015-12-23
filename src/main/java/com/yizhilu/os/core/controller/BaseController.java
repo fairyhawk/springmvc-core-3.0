@@ -10,11 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.yizhilu.os.core.service.cache.RedisService;
 import lombok.Getter;
 import lombok.Setter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -42,7 +44,8 @@ public class BaseController {
     public static JsonParser jsonParser = new JsonParser();
     private PageEntity page;// 分页数据单独保存
 
-    public Map<String, Object> json = new HashMap<String, Object>(4);
+    @Autowired
+	private RedisService redisService;
 
     // 公用返回路径
     public String changeSuccess = "/admin/common/success";// 修改成功提示页面
@@ -57,10 +60,12 @@ public class BaseController {
      * @param entity
      *            返回数据时实体
      */
-    public void setJson(boolean success, String message, Object entity) {
+    public Map<String, Object> getJsonMap(boolean success, String message, Object entity) {
+        Map<String, Object> json = new HashMap<String, Object>(4);
         json.put("success", success);
         json.put("message", message);
         json.put("entity", entity);
+        return  json;
     }
 
     // 绑定变量名字和属性，参数封装进类

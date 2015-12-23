@@ -6,7 +6,12 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yizhilu.os.core.controller.MemLoginUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.yizhilu.os.core.service.cache.CacheKit;
+import com.yizhilu.os.core.util.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,9 +32,15 @@ public class LoggerFilter extends HandlerInterceptorAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(LoggerFilter.class);
 
+    static CacheKit cacheKit=CacheKit.getInstance();
     @Getter
     @Setter
     private String[] excludeUrls;
+
+    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .create();
+    public static JsonParser jsonParser = new JsonParser();
+
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
@@ -67,9 +78,49 @@ public class LoggerFilter extends HandlerInterceptorAdapter {
             }
             buffer.append(key).append("=").append(Arrays.toString(value));
         }
-        logger.info("+++user_access_log,ip=" + ip + ",uid:"+ MemLoginUtils.getLoginUserId(request)+",url=" + path + ",parameter=" + buffer);
+        Long uid =getLoginUserId(request);
+        logger.info("---------------------start-----------------------------------");
+        logger.info("Controller\t:"+path);
+        logger.info("User IP    \t:" + ip + ",userId:"+ uid);
+        logger.info("Parameter\t:" + buffer);
+        logger.info("----------------------end------------------------------------");
+
         return true;
 
+    }
+
+    public static Long getLoginUserId(HttpServletRequest request)  {
+        try {
+            JsonObject useObject= getLoginUser(request);
+            if (ObjectUtils.isNotNull(useObject)) {
+                if ( StringUtils.isNotEmpty(useObject.get("id").toString())) {
+                    return Long.valueOf(useObject.get("id").toString());
+                } else {
+                    return 0L;
+                }
+            } else {
+                return 0L;
+            }
+        }catch (Exception e){
+            return 0L;
+        }
+    }
+    /**
+     * 获取登陆用户
+     *
+     * @return User
+     * @throws Exception
+     */
+    public static JsonObject getLoginUser(HttpServletRequest request)  {
+        String sid = WebUtils.getCookie(request, "sid");
+        if (StringUtils.isNotEmpty(sid)) {
+            Object ob =   cacheKit.get(sid);
+            if(ObjectUtils.isNotNull(ob)){
+                JsonObject user=  jsonParser.parse(ob.toString()).getAsJsonObject();
+                return user;
+            }
+        }
+        return null;
     }
 
 }
