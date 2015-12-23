@@ -68,7 +68,13 @@ public class LoggerFilter extends HandlerInterceptorAdapter {
                 }
             }
         }
-        StringBuffer buffer = new StringBuffer("");
+        Long uid =getLoginUserId(request);
+        StringBuffer buffer = new StringBuffer("\n");
+
+        buffer.append("Controller\t:" + path).append("\n");
+        buffer.append("User IP    \t:" + ip + ",userId:"+ uid).append("\n");
+        buffer.append("Parameter\t:");
+        //参数
         Enumeration<String> enume = request.getParameterNames();
         while (enume.hasMoreElements()) {
             String key = enume.nextElement();
@@ -78,12 +84,8 @@ public class LoggerFilter extends HandlerInterceptorAdapter {
             }
             buffer.append(key).append("=").append(Arrays.toString(value));
         }
-        Long uid =getLoginUserId(request);
-        logger.info("---------------------start-----------------------------------");
-        logger.info("Controller\t:"+path);
-        logger.info("User IP    \t:" + ip + ",userId:"+ uid);
-        logger.info("Parameter\t:" + buffer);
-        logger.info("----------------------end------------------------------------");
+        buffer.append("\n-------------------------------------------------------------------");
+        logger.info(buffer.toString());
 
         return true;
 
