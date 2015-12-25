@@ -33,6 +33,8 @@ public class LoggerFilter extends HandlerInterceptorAdapter {
     private static Logger logger = LoggerFactory.getLogger(LoggerFilter.class);
 
     static CacheKit cacheKit=CacheKit.getInstance();
+    String urlkey="urlcount";//统计请求的url访问次数
+    static  int urlkeytime=60*60*24*7;//统计请求的url的存数时间7天
     @Getter
     @Setter
     private String[] excludeUrls;
@@ -86,9 +88,8 @@ public class LoggerFilter extends HandlerInterceptorAdapter {
         }
         buffer.append("\n-------------------------------------------------------------------");
         logger.info(buffer.toString());
-
+        CacheKit.getInstance().getCache().opsForZSet().incrementScore(urlkey,path,1);
         return true;
-
     }
 
     public static Long getLoginUserId(HttpServletRequest request)  {

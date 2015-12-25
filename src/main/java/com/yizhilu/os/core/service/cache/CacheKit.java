@@ -15,6 +15,7 @@ public class CacheKit {
 
     public RedisService redisService = new RedisServiceImpl();
 
+    static int defalutTime=60*60*24;//默认存储时间1天（秒）
     public CacheKit() {
 
     }
@@ -38,7 +39,7 @@ public class CacheKit {
      * @return
      */
     public void set(String key, Object value) {
-        set(key, value, 60 * 60 * 24);
+        set(key, value, defalutTime);
         // redisService.set(key,value);
     }
 
